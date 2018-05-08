@@ -878,7 +878,24 @@ there.
 </style>
 
 <script>
-	
+	function saveSheet(){
+        // We make a Blob that contains the data to download.
+        var file = new window.Blob([document.documentElement.innerHTML], { type: "text/html" });
+        var URL = window.webkitURL || window.URL;
+
+        // This is the URL that will download the data.
+        var downloadUrl = URL.createObjectURL(file);
+
+        var a = document.createElement("a");
+        // This sets the file name.
+        a.download = document.title + ".html";
+        a.href = downloadUrl;
+
+        // Actually perform the download.
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+	}	
 
 	function change(id){
 		if(id == 'character-name'){
@@ -901,27 +918,27 @@ there.
 			<tbody>
 				<tr>
 					<td>Name</td>
-					<td><input type='text' id='character-name' onchange='change(this.id)' value='Name'></td>
+					<td><div id='character-name' onchange='change(this.id)'>Name</div></td>
 				</tr>
 				<tr>
 					<td>Rasse</td>
-					<td><input type='text' id='character-race' onchange='change(this.id)' value='Rasse'></td>
+					<td><div id='character-race' onchange='change(this.id)'>Rasse</div></td>
 				</tr>
 				<tr>
 					<td>Klasse</td>
-					<td><textarea id='character-class' onchange='change(this.id)'>Klasse(Stufe)</textarea></td>
+					<td><div id='character-class' onchange='change(this.id)'>Klasse(Stufe)</div></td>
 				</tr>
 				<tr>
 					<td>Motiv</td>
-					<td><input type='text' id='character-theme' onchange='change(this.id)' value='Motiv'></td>
+					<td><div id='character-theme' onchange='change(this.id)'>Motiv</div></td>
 				</tr>
 				<tr>
 					<td>Beschreibung</td>
-					<td><textarea id='character-description' onchange='change(this.id)'>Eine ausführliche Beschreibung des Charakters</textarea></td>
+					<td><div id='character-description' onchange='change(this.id)'>Eine ausführliche Beschreibung des Charakters</div></td>
 				</tr>
 				<tr>
 					<td>Gottheit</td>
-					<td><textarea id='character-deity' onchange='change(this.id)'>Gottheit mit Beschreibung</textarea></td>
+					<td><div id='character-deity' onchange='change(this.id)'>Gottheit mit Beschreibung</div></td>
 				</tr>
 			</tbody>
 		</table>
@@ -932,32 +949,32 @@ there.
 			<tbody>
 				<tr>
 					<td>Stärke</td>
-					<td><input type='number' id='character-str-value' value='10' onchange='document.getElementById("character-str-mod").innerHTML=Math.floor((document.getElementById("character-str-value").value - 10)/2)'></td>
+					<td><div id='character-str-value' onchange='document.getElementById("character-str-mod").innerHTML=Math.floor((document.getElementById("character-str-value").value - 10)/2)'>10</div></td>
 					<td onload='document.getElementById("character-str-mod").innerHTML=Math.floor((document.getElementById("character-str-value").value - 10)/2)' id='character-str-mod'>0</td>
 				</tr>
 				<tr>
 					<td>Geschicklichkeit</td>
-					<td><input type='number' id='character-dex-value' value='10' onchange='document.getElementById("character-dex-mod").innerHTML=Math.floor((document.getElementById("character-dex-value").value - 10)/2)'></td>
+					<td><div id='character-dex-value' onchange='document.getElementById("character-dex-mod").innerHTML=Math.floor((document.getElementById("character-dex-value").value - 10)/2)'>10</div></td>
 					<td id='character-dex-mod'>0</td>
 				</tr>
 				<tr>
 					<td>Konstitution</td>
-					<td><input type='number' id='character-con-value' value='10' onchange='document.getElementById("character-con-mod").innerHTML=Math.floor((document.getElementById("character-con-value").value - 10)/2)'></td>
+					<td><div id='character-con-value' onchange='document.getElementById("character-con-mod").innerHTML=Math.floor((document.getElementById("character-con-value").value - 10)/2)'>10</div></td>
 					<td id='character-con-mod'>0</td>
 				</tr>
 				<tr>
 					<td>Intelligenz</td>
-					<td><input type='number' id='character-int-value' value='10' onchange='document.getElementById("character-int-mod").innerHTML=Math.floor((document.getElementById("character-int-value").value - 10)/2)'></td>
+					<td><div id='character-int-value' onchange='document.getElementById("character-int-mod").innerHTML=Math.floor((document.getElementById("character-int-value").value - 10)/2)'>10</div></td>
 					<td id='character-int-mod'>0</td>
 				</tr>
 				<tr>
 					<td>Weisheit</td>
-					<td><input type='number' id='character-wis-value' value='10' onchange='document.getElementById("character-wis-mod").innerHTML=Math.floor((document.getElementById("character-wis-value").value - 10)/2)'></td>
+					<td><div id='character-wis-value' onchange='document.getElementById("character-wis-mod").innerHTML=Math.floor((document.getElementById("character-wis-value").value - 10)/2)'>10</div></td>
 					<td id='character-wis-mod'>0</td>
 				</tr>
 				<tr>
 					<td>Charisma</td>
-					<td><input type='number' id='character-cha-value' value='10' onchange='document.getElementById("character-cha-mod").innerHTML=Math.floor((document.getElementById("character-cha-value").value - 10)/2)'></td>
+					<td><div id='character-cha-value' onchange='document.getElementById("character-cha-mod").innerHTML=Math.floor((document.getElementById("character-cha-value").value - 10)/2)'>10</div></td>
 					<td id='character-cha-mod'>0</td>
 				</tr>
 			</tbody>
@@ -1292,7 +1309,7 @@ there.
 	<textarea class="u-full-width"></textarea>	
 	</div>
 		<div class="row u-full-width">
-			<button class="button-primary u-full-width" onclick="javascript:change()">Speichern</button>
+			<button class="button-primary u-full-width" onclick="javascript:saveSheet()">Speichern</button>
 		</div>
   </div>
 
