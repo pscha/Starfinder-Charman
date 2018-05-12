@@ -877,7 +877,71 @@ there.
 @media (min-width: 1200px) {}
 </style>
 
+<style>
+/* Popup container - can be anything you want */
+.popup {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* The actual popup */
+.popup .popuptext {
+    visibility: hidden;
+    width: auto;
+    background-color: #555;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px 8px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -80px;
+}
+
+/* Popup arrow */
+.popup .popuptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+}
+
+/* Toggle this class - hide and show the popup */
+.popup .show {
+    visibility: visible;
+    -webkit-animation: fadeIn 1s;
+    animation: fadeIn 1s;
+}
+
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+    from {opacity: 0;} 
+    to {opacity: 1;}
+}
+
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity:1 ;}
+}
+</style>
+
 <script>
+    function myFunction(id) {
+        var popup = document.getElementById(id + '-popup');
+        popup.classList.toggle("show");
+		change(id);	
+    }
+
 	function saveSheet(){
         // We make a Blob that contains the data to download.
         var file = new window.Blob([document.documentElement.innerHTML], { type: "text/html" });
@@ -898,10 +962,11 @@ there.
 	}	
 
 	function change(id){
+	    newValue = document.getElementById(id + '-edit').value;
+	    document.getElementById(id + '-value').innerHTML = newValue;
 		if(id == 'character-name'){
-			new_value = document.getElementById(id).value;
-			document.title=new_value;
-			document.getElementById('page-title').innerHTML = new_value; 
+			document.title=newValue;
+			document.getElementById('page-title').innerHTML = newValue; 
 		}
 	}
 </script>
@@ -918,27 +983,27 @@ there.
 			<tbody>
 				<tr>
 					<td>Name</td>
-					<td><div id='character-name' onchange='change(this.id)'>Name</div></td>
+					<td><div class='popup' id='character-name' onchange='change(this.id)' onclick='myFunction(this.id)'><span class="popuptext" id="character-name-popup"><input type=text id='character-name-edit' value='Name'></span><div id='character-name-value'>Name</div></div></td>
 				</tr>
 				<tr>
 					<td>Rasse</td>
-					<td><div id='character-race' onchange='change(this.id)'>Rasse</div></td>
+					<td><div class='popup' id='character-race' onchange='change(this.id)' onclick='myFunction(this.id)'><span class="popuptext" id="character-race-popup"><input type=text id='character-race-edit' value='Rasse'></span><div id='character-race-value'>Rasse</div></div></td>
 				</tr>
 				<tr>
 					<td>Klasse</td>
-					<td><div id='character-class' onchange='change(this.id)'>Klasse(Stufe)</div></td>
+					<td><div class='popup' id='character-class' onchange='change(this.id)' onclick='myFunction(this.id)'><span class="popuptext" id="character-class-popup"><input type=text id='character-class-edit' value='Klasse(Stufe)'></span><div id='character-class-value'>Klasse(Stufe)</div></div></td>
 				</tr>
 				<tr>
 					<td>Motiv</td>
-					<td><div id='character-theme' onchange='change(this.id)'>Motiv</div></td>
+					<td><div class='popup' id='character-theme' onchange='change(this.id)' onclick='myFunction(this.id)'><span class="popuptext" id="character-theme-popup"><input type=text id='character-theme-edit' value='Motiv'></span><div id='character-theme-value'>Motiv</div></div></td>
 				</tr>
 				<tr>
 					<td>Beschreibung</td>
-					<td><div id='character-description' onchange='change(this.id)'>Eine ausführliche Beschreibung des Charakters</div></td>
+					<td><div class='popup' id='character-description' onchange='change(this.id)' onclick='myFunction(this.id)'><span class="popuptext" id="character-description-popup"><input type=text id='character-description-edit' value='Eine ausführliche Beschreibung des Charakters'></span><div id='character-description-value'>Eine ausführliche Beschreibung des Charakters</div></div></td>
 				</tr>
 				<tr>
 					<td>Gottheit</td>
-					<td><div id='character-deity' onchange='change(this.id)'>Gottheit mit Beschreibung</div></td>
+					<td><div class='popup' id='character-deity' onchange='change(this.id)' onclick='myFunction(this.id)'><span class="popuptext" id="character-deity-popup"><input type=text id='character-deity-edit' value='Gottheit mit Beschreibung'></span><div id='character-deity-value'>Gottheit mit Beschreibung</div></div></td>
 				</tr>
 			</tbody>
 		</table>
@@ -949,32 +1014,32 @@ there.
 			<tbody>
 				<tr>
 					<td>Stärke</td>
-					<td><div id='character-str-value' onchange='document.getElementById("character-str-mod").innerHTML=Math.floor((document.getElementById("character-str-value").value - 10)/2)'>10</div></td>
+					<td><div class='popup' id='character-str-value' onclick='myFunction(this.id); document.getElementById("character-str-mod").innerHTML=Math.floor((document.getElementById("character-str-value-value").innerHTML - 10)/2)'><span class="popuptext" id="character-str-value-popup"><input type=text id='character-str-value-edit' value='10'></span><div id='character-str-value-value'>10</div></div></td>
 					<td onload='document.getElementById("character-str-mod").innerHTML=Math.floor((document.getElementById("character-str-value").value - 10)/2)' id='character-str-mod'>0</td>
 				</tr>
 				<tr>
 					<td>Geschicklichkeit</td>
-					<td><div id='character-dex-value' onchange='document.getElementById("character-dex-mod").innerHTML=Math.floor((document.getElementById("character-dex-value").value - 10)/2)'>10</div></td>
+					<td><div class='popup' id='character-dex-value' onclick='myFunction(this.id); document.getElementById("character-dex-mod").innerHTML=Math.floor((document.getElementById("character-dex-value-value").innerHTML - 10)/2)'><span class="popuptext" id="character-dex-value-popup"><input type=text id='character-dex-value-edit' value='10'></span><div id='character-dex-value-value'>10</div></div></td>
 					<td id='character-dex-mod'>0</td>
 				</tr>
 				<tr>
 					<td>Konstitution</td>
-					<td><div id='character-con-value' onchange='document.getElementById("character-con-mod").innerHTML=Math.floor((document.getElementById("character-con-value").value - 10)/2)'>10</div></td>
+					<td><div class='popup' id='character-con-value' onclick='myFunction(this.id); document.getElementById("character-con-mod").innerHTML=Math.floor((document.getElementById("character-con-value-value").innerHTML - 10)/2)'><span class="popuptext" id="character-con-value-popup"><input type=text id='character-con-value-edit' value='10'></span><div id='character-con-value-value'>10</div></div></td>
 					<td id='character-con-mod'>0</td>
 				</tr>
 				<tr>
 					<td>Intelligenz</td>
-					<td><div id='character-int-value' onchange='document.getElementById("character-int-mod").innerHTML=Math.floor((document.getElementById("character-int-value").value - 10)/2)'>10</div></td>
+					<td><div class='popup' id='character-int-value' onclick='myFunction(this.id); document.getElementById("character-int-mod").innerHTML=Math.floor((document.getElementById("character-int-value-value").innerHTML - 10)/2)'><span class="popuptext" id="character-int-value-popup"><input type=text id='character-int-value-edit' value='10'></span><div id='character-int-value-value'>10</div></div></td>
 					<td id='character-int-mod'>0</td>
 				</tr>
 				<tr>
 					<td>Weisheit</td>
-					<td><div id='character-wis-value' onchange='document.getElementById("character-wis-mod").innerHTML=Math.floor((document.getElementById("character-wis-value").value - 10)/2)'>10</div></td>
+					<td><div class='popup' id='character-wis-value' onclick='myFunction(this.id); document.getElementById("character-wis-mod").innerHTML=Math.floor((document.getElementById("character-wis-value-value").innerHTML - 10)/2)'><span class="popuptext" id="character-wis-value-popup"><input type=text id='character-wis-value-edit' value='10'></span><div id='character-wis-value-value'>10</div></div></td>
 					<td id='character-wis-mod'>0</td>
 				</tr>
 				<tr>
 					<td>Charisma</td>
-					<td><div id='character-cha-value' onchange='document.getElementById("character-cha-mod").innerHTML=Math.floor((document.getElementById("character-cha-value").value - 10)/2)'>10</div></td>
+					<td><div class='popup' id='character-cha-value' onclick='myFunction(this.id); document.getElementById("character-cha-mod").innerHTML=Math.floor((document.getElementById("character-cha-value-value").innerHTML - 10)/2)'><span class="popuptext" id="character-cha-value-popup"><input type=text id='character-cha-value-edit' value='10'></span><div id='character-cha-value-value'>10</div></div></td>
 					<td id='character-cha-mod'>0</td>
 				</tr>
 			</tbody>
